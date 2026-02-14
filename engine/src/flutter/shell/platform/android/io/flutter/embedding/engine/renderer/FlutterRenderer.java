@@ -63,6 +63,19 @@ public class FlutterRenderer implements TextureRegistry {
    */
   @VisibleForTesting public static boolean debugForceSurfaceProducerGlTextures = false;
 
+  /**
+   * Returns true if this device has a known {@link android.hardware.HardwareBuffer} defect.
+   *
+   * <p>Huawei devices on API 29 or below have {@link android.media.ImageReader} issues that cause
+   * video playback failures due to defective HardwareBuffer implementations.
+   *
+   * @see <a href="https://github.com/flutter/flutter/issues/166481">#166481</a>
+   */
+  private static boolean hasAndroidHardwareBufferDefect() {
+    return Build.VERSION.SDK_INT <= API_LEVELS.API_29
+        && "HUAWEI".equalsIgnoreCase(Build.MANUFACTURER);
+  }
+
   /** Whether to disable clearing of the Surface used to render platform views. */
   @VisibleForTesting public static boolean debugDisableSurfaceClear = false;
 
@@ -199,7 +212,9 @@ public class FlutterRenderer implements TextureRegistry {
   @Override
   public SurfaceProducer createSurfaceProducer(SurfaceLifecycle lifecycle) {
     final SurfaceProducer entry;
-    if (!debugForceSurfaceProducerGlTextures && Build.VERSION.SDK_INT >= API_LEVELS.API_29) {
+    if (!debugForceSurfaceProducerGlTextures
+        && Build.VERSION.SDK_INT >= API_LEVELS.API_29
+        && !hasAndroidHardwareBufferDefect()) {
       final long id = nextTextureId.getAndIncrement();
       final ImageReaderSurfaceProducer producer = new ImageReaderSurfaceProducer(id);
       boolean reset = lifecycle == SurfaceLifecycle.resetInBackground;
