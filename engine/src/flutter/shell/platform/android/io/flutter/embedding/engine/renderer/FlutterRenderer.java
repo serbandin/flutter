@@ -70,6 +70,9 @@ public class FlutterRenderer implements TextureRegistry {
    * video playback failures due to defective HardwareBuffer implementations.
    *
    * @see <a href="https://github.com/flutter/flutter/issues/166481">#166481</a>
+   * See <a href="https://github.com/flutter/flutter/issues/156459">#156459</a>
+   * See <a href="https://github.com/flutter/flutter/issues/154068">#154068</a>
+   * See <a href="https://github.com/flutter/engine/pull/54879">engine pr #54879</a>
    */
   private static boolean hasAndroidHardwareBufferDefect() {
     return Build.VERSION.SDK_INT <= API_LEVELS.API_29
