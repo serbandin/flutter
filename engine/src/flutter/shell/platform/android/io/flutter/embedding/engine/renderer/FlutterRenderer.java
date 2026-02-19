@@ -75,6 +75,11 @@ public class FlutterRenderer implements TextureRegistry {
    * See <a href="https://github.com/flutter/engine/pull/54879">engine pr #54879</a>
    */
   private static boolean hasAndroidHardwareBufferDefect() {
+    // To test if some device should be added from this list app developers first should attempt to play a video and see a failure in the logs. 
+    /// ```E/ACodec: Failed to allocate buffers after transitioning to IDLE state (error 0xfffffc0e)
+    /// W/ACodec: [OMX.hisi.video.decoder.avc] setting nBufferCountActual to 12 failed: -1010 E/MediaCodecVideoRenderer: Video codec error```
+     /// Then try setting `FlutterRenderer.debugForceSurfaceProducerGlTextures = true` in an example app. 
+    /// If the video plays then that is a strong signal that this method should be updated to include the tested device. 
     return Build.VERSION.SDK_INT <= API_LEVELS.API_29
         && "HUAWEI".equalsIgnoreCase(Build.MANUFACTURER);
   }
