@@ -839,7 +839,7 @@ public class FlutterRendererTest {
     // Verify: Should return SurfaceTextureSurfaceProducer instead of ImageReaderSurfaceProducer.
     assertTrue(
         "Expected SurfaceTextureSurfaceProducer on Huawei API <= 29 due to HardwareBuffer defect causing video playback failures",
-        producer instanceof FlutterRenderer.SurfaceTextureSurfaceProducer);
+        producer instanceof SurfaceTextureSurfaceProducer);
   }
 
   @Test
